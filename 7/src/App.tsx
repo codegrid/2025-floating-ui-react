@@ -1,31 +1,45 @@
-import { Popover } from './Popover'; // Assuming Popover is in the same directory
+import { useState } from 'react';
+import {
+  useFloating,
+  useRole, // 追加
+  useInteractions, // 追加
+} from '@floating-ui/react';
 
 function App() {
 
+  const [ isOpen, setIsOpen ] = useState( false );
+  const { refs, floatingStyles, context } = useFloating( {
+    open: isOpen,
+    onOpenChange: setIsOpen,
+  } );
+
+  const role = useRole( context, { role: 'dialog' } ); // 追加
+
+  const { getReferenceProps, getFloatingProps } = useInteractions( [
+    role,
+  ] );
+
   return (
     <>
-      Basic React App
-      <div style={ { height: 'calc(100vh - 60px)' } }></div>
-
-      <Popover
-        trigger={
-          <button type="button">Click me!</button>
-        }
+      Basic React App<br />
+      <button
+        type="button"
+        ref={ refs.setReference }
+        onClick={ () => setIsOpen( ! isOpen ) }
+        { ...getReferenceProps() } // 追加
       >
-        ポップオーバー内容
-      </Popover>
+        Click Me!
+      </button>
 
-      <div style={ { display: 'flex', justifyContent: 'end' } }>
-        <Popover
-          trigger={
-            <button type="button">Click me, too!</button>
-          }
+      { isOpen && (
+        <div
+          ref={ refs.setFloating }
+          style={ { ...floatingStyles, zIndex: 100, background: '#ccc' } }
+          { ...getFloatingProps() } // 追加
         >
-          右端のポップオーバー内容
-        </Popover>
-      </div>
-
-      <div style={ { height: '100vh' } }></div>
+          Popover
+        </div>
+      ) }
     </>
   );
 }
