@@ -1,4 +1,4 @@
-import { Popover } from './Popover'; // Assuming Popover is in the same directory
+import { Popover } from './Popover';
 
 function App() {
 

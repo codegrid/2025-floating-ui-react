@@ -9,6 +9,7 @@ import {
 import {
   useFloating,
   useDismiss,
+  useRole,
   useInteractions,
   flip,
   autoUpdate,
@@ -34,9 +35,10 @@ export const Popover = ( { trigger, children }: PopoverProps ) => {
     whileElementsMounted: autoUpdate,
   } );
   const dismiss = useDismiss( context );
+  const role = useRole( context );
 
   const { getReferenceProps, getFloatingProps } = useInteractions( [
-    dismiss,
+    role, dismiss,
   ] );
 
   // トリガーボタンに必要なpropsを適用
