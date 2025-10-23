@@ -41,6 +41,12 @@ jobs:
             6a/node_modules
             7/node_modules
             8/node_modules
+            10/node_modules
+            11/node_modules
+            12/node_modules
+            13/node_modules
+            14/node_modules
+            15/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('*/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -51,7 +57,7 @@ jobs:
           
           echo "Installing dependencies for all projects..."
           # Install dependencies for all projects sequentially
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
             echo "Installing dependencies for project $dir..."
             cd $dir
             npm install
@@ -60,7 +66,7 @@ jobs:
           
           echo "Building all projects..."
           # Build all projects sequentially to capture any build errors
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
             echo "Building project $dir..."
             cd $dir
             if npm run build; then
@@ -78,7 +84,7 @@ jobs:
           mkdir -p dist
           
           echo "Copying build artifacts..."
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
             if [ -d "$dir/dist" ] && [ "$(ls -A $dir/dist 2>/dev/null)" ]; then
               echo "Copying $dir/dist to dist/$dir/"
               mkdir -p dist/$dir
@@ -192,6 +198,34 @@ jobs:
                   <a href="./8/" class="demo-card">
                       <div class="demo-title">Demo 8</div>
                       <div class="demo-desc">完全なコンポーネント</div>
+                  </a>
+                  <a href="./101/" class="demo-card">
+                      <div class="demo-title">Demo 101</div>
+                      <div class="demo-desc">カスタムセレクト 手順 2 ステート準備</div>
+                  </a>
+                  <a href="./102/" class="demo-card">
+                      <div class="demo-title">Demo 102</div>
+                      <div class="demo-desc">カスタムセレクト 手順 3 選択した内容をトリガーに表示する</div>
+                  </a>
+                  <a href="./103/" class="demo-card">
+                      <div class="demo-title">Demo 103</div>
+                      <div class="demo-desc">カスタムセレクト 手順 4 ポップオーバー化</div>
+                  </a>
+                  <a href="./104/" class="demo-card">
+                      <div class="demo-title">Demo 104</div>
+                      <div class="demo-desc">カスタムセレクト 手順 5 ブラウザ画面に収める</div>
+                  </a>
+                  <a href="./105/" class="demo-card">
+                      <div class="demo-title">Demo 105</div>
+                      <div class="demo-desc">カスタムセレクト 手順 6 キーボード操作</div>
+                  </a>
+                  <a href="./106/" class="demo-card">
+                      <div class="demo-title">Demo 106</div>
+                      <div class="demo-desc">カスタムセレクト 手順 7 アクセシビリティ</div>
+                  </a>
+                  <a href="./107/" class="demo-card">
+                      <div class="demo-title">Demo 107</div>
+                      <div class="demo-desc">カスタムセレクト 手順 8 コンポーネント化</div>
                   </a>
               </div>
           </body>
