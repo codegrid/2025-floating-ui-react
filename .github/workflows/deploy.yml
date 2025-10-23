@@ -41,12 +41,13 @@ jobs:
             6a/node_modules
             7/node_modules
             8/node_modules
-            10/node_modules
-            11/node_modules
-            12/node_modules
-            13/node_modules
-            14/node_modules
-            15/node_modules
+            101/node_modules
+            102/node_modules
+            103/node_modules
+            104/node_modules
+            105/node_modules
+            106/node_modules
+            107/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('*/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -57,7 +58,7 @@ jobs:
           
           echo "Installing dependencies for all projects..."
           # Install dependencies for all projects sequentially
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
             echo "Installing dependencies for project $dir..."
             cd $dir
             npm install
@@ -66,7 +67,7 @@ jobs:
           
           echo "Building all projects..."
           # Build all projects sequentially to capture any build errors
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
             echo "Building project $dir..."
             cd $dir
             if npm run build; then
@@ -84,7 +85,7 @@ jobs:
           mkdir -p dist
           
           echo "Copying build artifacts..."
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 10 11 12 13 14 15; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
             if [ -d "$dir/dist" ] && [ "$(ls -A $dir/dist 2>/dev/null)" ]; then
               echo "Copying $dir/dist to dist/$dir/"
               mkdir -p dist/$dir
