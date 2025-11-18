@@ -1,13 +1,5 @@
 import { useState, useMemo } from 'react';
-import {
-	useFloating,
-	useClick,
-	useDismiss,
-	useInteractions,
-	offset,
-	autoUpdate,
-	FloatingPortal,
-} from '@floating-ui/react';
+import { Select } from './Select';
 
 function App() {
 	const options = [
@@ -29,98 +21,26 @@ function App() {
 		{ value: 'ZA', label: '南アフリカ', thumb: 'https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3/za.svg' },
 	];
 
-	const [ isOpen, setIsOpen ] = useState< boolean >( false );
 	const [ selectedIndex, setSelectedIndex ] = useState< number | null >( null );
 
-	const { refs, floatingStyles, context } = useFloating< HTMLElement >( {
-		placement: "bottom-start",
-		open: isOpen,
-		onOpenChange: setIsOpen,
-		whileElementsMounted: autoUpdate,
-		middleware: [
-			offset( 5 ),
-		],
-	} );
-
-	const click = useClick( context, { event: "mousedown" } );
-	const dismiss = useDismiss( context );
-
-	const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions( [
-		click, dismiss,
-	] );
-
-	const handleSelect = ( index: number ) => {
-		setSelectedIndex( index );
-		setIsOpen( false );
-	};
-
-	const selectedLabel = useMemo( () => {
+	const selectedValue = useMemo( () => {
 		if ( selectedIndex === null ) return null;
-		return options[ selectedIndex ]?.label ?? null;
+		return options[ selectedIndex ]?.value ?? null;
 	}, [ selectedIndex, options ] );
 
 	return (
-		<div style={{paddingBlock: '50vh'}}>
+		<>
 			Basic React App<br />
-			選択値: { selectedIndex }<br />
-			<button
-				type="button"
-				ref={ refs.setReference }
-				aria-label="国を選択"
-				{ ...getReferenceProps() }
-			>
-				{ selectedLabel ?? "選択してください" }
-			</button>
-
-			{ isOpen && (
-				<FloatingPortal>
-					<div
-						ref={ refs.setFloating }
-						style={ {
-							...floatingStyles,
-							overflowY: "auto",
-							background: "#eee",
-							minWidth: 100,
-							borderRadius: 8,
-						} }
-						{ ...getFloatingProps() }
-					>
-						{ options.map( ( { value, label, thumb }, i ) => (
-							<button
-								key={ value }
-								type="button"
-								style={ {
-									display: "flex",
-									gap: 8,
-									width: "100%",
-									border: 0,
-									textAlign: "left",
-								} }
-								{ ...getItemProps( {
-									onClick() {
-										handleSelect( i );
-									},
-									onKeyDown( event ) {
-										if (
-											event.key === "Enter" ||
-											event.key === " "
-										) {
-											event.preventDefault();
-											handleSelect( i );
-										}
-									},
-								} ) }
-							>
-								<img src={ thumb } alt="" width="16" />
-								{ label }
-								{ i === selectedIndex && "✅" }
-							</button>
-						) ) }
-					</div>
-				</FloatingPortal>
-			) }
+			選択値(index): { selectedIndex }<br />
+			選択値(value): { selectedValue ?? 'なし' }<br />
+			<Select
+				label="国を選択"
+				selectedIndex={ selectedIndex }
+				options={ options }
+				onChange={ setSelectedIndex }
+			/>
 			<div>後続のコンテンツ</div>
-		</div>
+		</>
 	);
 }
 

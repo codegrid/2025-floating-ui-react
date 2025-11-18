@@ -5,7 +5,6 @@ import {
 	useDismiss,
 	useInteractions,
 	offset,
-	flip,
 	size,
 	autoUpdate,
 	FloatingPortal,
@@ -42,7 +41,6 @@ function App() {
 		whileElementsMounted: autoUpdate,
 		middleware: [
 			offset( 5 ),
-			flip( { padding: 10 } ),
 			size( {
 				apply( { rects, elements, availableHeight } ) {
 					Object.assign( elements.floating.style, {

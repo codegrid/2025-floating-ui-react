@@ -3,7 +3,6 @@ import {
 	useFloating,
 	useClick,
 	useDismiss,
-	useRole,
 	useListNavigation,
 	useInteractions,
 	offset,
@@ -69,10 +68,9 @@ function App() {
 		onNavigate: setActiveIndex,
 		loop: true,
 	} );
-	const role = useRole( context, { role: "listbox" } );
 
 	const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions( [
-		click, dismiss, listNav, role
+		click, dismiss, listNav
 	] );
 
 	const handleSelect = ( index: number ) => {

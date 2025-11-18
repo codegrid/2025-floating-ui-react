@@ -1,5 +1,18 @@
-import { useState, useMemo } from 'react';
-import { Select } from './Select';
+import { useState, useMemo, useRef } from 'react';
+import {
+	useFloating,
+	useClick,
+	useDismiss,
+	useRole,
+	useListNavigation,
+	useInteractions,
+	offset,
+	flip,
+	size,
+	autoUpdate,
+	FloatingPortal,
+	FloatingFocusManager,
+} from '@floating-ui/react';
 
 function App() {
 	const options = [
@@ -21,24 +34,125 @@ function App() {
 		{ value: 'ZA', label: '南アフリカ', thumb: 'https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3/za.svg' },
 	];
 
+	const [ isOpen, setIsOpen ] = useState< boolean >( false );
+	const [ activeIndex, setActiveIndex ] = useState< number | null >( null );
 	const [ selectedIndex, setSelectedIndex ] = useState< number | null >( null );
 
-	const selectedValue = useMemo( () => {
+	const { refs, floatingStyles, context } = useFloating< HTMLElement >( {
+		placement: "bottom-start",
+		open: isOpen,
+		onOpenChange: setIsOpen,
+		whileElementsMounted: autoUpdate,
+		middleware: [
+			offset( 5 ),
+			flip( { padding: 10 } ),
+			size( {
+				apply( { rects, elements, availableHeight } ) {
+					Object.assign( elements.floating.style, {
+						maxHeight: `${ availableHeight }px`,
+						minWidth: `${ rects.reference.width }px`,
+					} );
+				},
+				padding: 10,
+			} ),
+		],
+	} );
+
+	const listRef = useRef< ( HTMLElement | null )[] >( [] );
+
+	const click = useClick( context, { event: "mousedown" } );
+	const dismiss = useDismiss( context );
+	const listNav = useListNavigation( context, {
+		listRef,
+		activeIndex,
+		selectedIndex,
+		onNavigate: setActiveIndex,
+		loop: true,
+	} );
+	const role = useRole( context, { role: "listbox" } );
+
+	const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions( [
+		click, dismiss, listNav, role
+	] );
+
+	const handleSelect = ( index: number ) => {
+		setSelectedIndex( index );
+		setIsOpen( false );
+	};
+
+	const selectedLabel = useMemo( () => {
 		if ( selectedIndex === null ) return null;
-		return options[ selectedIndex ]?.value ?? null;
+		return options[ selectedIndex ]?.label ?? null;
 	}, [ selectedIndex, options ] );
 
 	return (
 		<>
 			Basic React App<br />
-			選択値(index): { selectedIndex }<br />
-			選択値(value): { selectedValue ?? 'なし' }<br />
-			<Select
-				label="国を選択"
-				selectedIndex={ selectedIndex }
-				options={ options }
-				onChange={ setSelectedIndex }
-			/>
+			選択値: { selectedIndex }<br />
+			<button
+				type="button"
+				ref={ refs.setReference }
+				aria-label="国を選択"
+				onClick={ () => refs.domReference.current?.focus() }
+				{ ...getReferenceProps() }
+			>
+				{ selectedLabel ?? "選択してください" }
+			</button>
+
+			{ isOpen && (
+				<FloatingPortal>
+					<FloatingFocusManager context={ context } modal={ false }>
+						<div
+							ref={ refs.setFloating }
+							style={ {
+								...floatingStyles,
+								overflowY: "auto",
+								background: "#eee",
+								minWidth: 100,
+								borderRadius: 8,
+							} }
+							{ ...getFloatingProps() }
+						>
+							{ options.map( ( { value, label, thumb }, i ) => (
+								<button
+									key={ value }
+									ref={ ( node ) => {
+										listRef.current[ i ] = node;
+									} }
+									type="button"
+									tabIndex={ i === activeIndex ? 0 : - 1 }
+									style={ {
+										display: "flex",
+										gap: 8,
+										width: "100%",
+										border: 0,
+										textAlign: "left",
+										background: i === activeIndex ? "cyan" : "",
+									} }
+									{ ...getItemProps( {
+										onClick() {
+											handleSelect( i );
+										},
+										onKeyDown( event ) {
+											if (
+												event.key === "Enter" ||
+												event.key === " "
+											) {
+												event.preventDefault();
+												handleSelect( i );
+											}
+										},
+									} ) }
+								>
+									<img src={ thumb } alt="" width="16" />
+									{ label }
+									{ i === selectedIndex && "✅" }
+								</button>
+							) ) }
+						</div>
+					</FloatingFocusManager>
+				</FloatingPortal>
+			) }
 			<div>後続のコンテンツ</div>
 		</>
 	);

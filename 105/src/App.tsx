@@ -1,9 +1,8 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import {
 	useFloating,
 	useClick,
 	useDismiss,
-	useListNavigation,
 	useInteractions,
 	offset,
 	flip,
@@ -34,7 +33,6 @@ function App() {
 	];
 
 	const [ isOpen, setIsOpen ] = useState< boolean >( false );
-	const [ activeIndex, setActiveIndex ] = useState< number | null >( null );
 	const [ selectedIndex, setSelectedIndex ] = useState< number | null >( null );
 
 	const { refs, floatingStyles, context } = useFloating< HTMLElement >( {
@@ -57,20 +55,11 @@ function App() {
 		],
 	} );
 
-	const listRef = useRef< ( HTMLElement | null )[] >( [] );
-
 	const click = useClick( context, { event: "mousedown" } );
 	const dismiss = useDismiss( context );
-	const listNav = useListNavigation( context, {
-		listRef,
-		activeIndex,
-		selectedIndex,
-		onNavigate: setActiveIndex,
-		loop: true,
-	} );
 
 	const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions( [
-		click, dismiss, listNav
+		click, dismiss,
 	] );
 
 	const handleSelect = ( index: number ) => {
@@ -114,18 +103,13 @@ function App() {
 							{ options.map( ( { value, label, thumb }, i ) => (
 								<button
 									key={ value }
-									ref={ ( node ) => {
-										listRef.current[ i ] = node;
-									} }
 									type="button"
-									tabIndex={ i === activeIndex ? 0 : - 1 }
 									style={ {
 										display: "flex",
 										gap: 8,
 										width: "100%",
 										border: 0,
 										textAlign: "left",
-										background: i === activeIndex ? "cyan" : "",
 									} }
 									{ ...getItemProps( {
 										onClick() {
