@@ -116,6 +116,7 @@ function App() {
 								onChange={ ( event ) => setFilter( event.target.value ) }
 								onKeyDown={ ( event ) => {
 									if ( event.key !== "Enter" ) return;
+									// 確定前の日本語入力中は無視する
 									if ( event.nativeEvent.isComposing ) return;
 									// 候補が一つに絞られていたら、自動選択する
 									if ( filteredOptions.length === 1 ) {
@@ -128,7 +129,6 @@ function App() {
 										handleSelect( exactMatch[ 0 ].value );
 									}
 								} }
-								placeholder="..."
 								style={ {
 									width: "100%",
 									boxSizing: "border-box"

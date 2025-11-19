@@ -48,6 +48,7 @@ jobs:
             105/node_modules
             106/node_modules
             107/node_modules
+            108/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('*/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -58,7 +59,7 @@ jobs:
           
           echo "Installing dependencies for all projects..."
           # Install dependencies for all projects sequentially
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
             echo "Installing dependencies for project $dir..."
             cd $dir
             npm install
@@ -67,7 +68,7 @@ jobs:
           
           echo "Building all projects..."
           # Build all projects sequentially to capture any build errors
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
             echo "Building project $dir..."
             cd $dir
             if npm run build; then
@@ -85,7 +86,7 @@ jobs:
           mkdir -p dist
           
           echo "Copying build artifacts..."
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
             if [ -d "$dir/dist" ] && [ "$(ls -A $dir/dist 2>/dev/null)" ]; then
               echo "Copying $dir/dist to dist/$dir/"
               mkdir -p dist/$dir
@@ -218,15 +219,19 @@ jobs:
                   </a>
                   <a href="./105/" class="demo-card">
                       <div class="demo-title">Demo 105</div>
-                      <div class="demo-desc">カスタムセレクト 手順 6 キーボード操作</div>
+                      <div class="demo-desc">カスタムセレクト 手順 6 フリップ機能で有効領域が広い方向に展開</div>
                   </a>
                   <a href="./106/" class="demo-card">
                       <div class="demo-title">Demo 106</div>
-                      <div class="demo-desc">カスタムセレクト 手順 7 アクセシビリティ</div>
+                      <div class="demo-desc">カスタムセレクト 手順 7 キーボード操作</div>
                   </a>
                   <a href="./107/" class="demo-card">
                       <div class="demo-title">Demo 107</div>
-                      <div class="demo-desc">カスタムセレクト 手順 8 コンポーネント化</div>
+                      <div class="demo-desc">カスタムセレクト 手順 8 アクセシビリティ</div>
+                  </a>
+                  <a href="./108/" class="demo-card">
+                      <div class="demo-title">Demo 108</div>
+                      <div class="demo-desc">カスタムセレクト 手順 9 コンポーネント化</div>
                   </a>
               </div>
           </body>
