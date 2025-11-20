@@ -60,7 +60,7 @@ function App() {
 	}, [ selectedIndex, options ] );
 
 	return (
-		<div style={{paddingBlock: '50vh'}}>
+		<>
 			Basic React App<br />
 			選択値: { selectedIndex }<br />
 			<button
@@ -120,7 +120,7 @@ function App() {
 				</FloatingPortal>
 			) }
 			<div>後続のコンテンツ</div>
-		</div>
+		</>
 	);
 }
 
