@@ -49,6 +49,7 @@ jobs:
             106/node_modules
             107/node_modules
             108/node_modules
+            201/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('*/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -59,7 +60,7 @@ jobs:
           
           echo "Installing dependencies for all projects..."
           # Install dependencies for all projects sequentially
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108 201; do
             echo "Installing dependencies for project $dir..."
             cd $dir
             npm install
@@ -68,7 +69,7 @@ jobs:
           
           echo "Building all projects..."
           # Build all projects sequentially to capture any build errors
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108 201; do
             echo "Building project $dir..."
             cd $dir
             if npm run build; then
@@ -86,7 +87,7 @@ jobs:
           mkdir -p dist
           
           echo "Copying build artifacts..."
-          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108; do
+          for dir in 1 2 3 4 5 5a 5b 6 6a 7 8 101 102 103 104 105 106 107 108 201; do
             if [ -d "$dir/dist" ] && [ "$(ls -A $dir/dist 2>/dev/null)" ]; then
               echo "Copying $dir/dist to dist/$dir/"
               mkdir -p dist/$dir
@@ -232,6 +233,10 @@ jobs:
                   <a href="./108/" class="demo-card">
                       <div class="demo-title">Demo 108</div>
                       <div class="demo-desc">カスタムセレクト 手順 9 コンポーネント化</div>
+                  </a>
+                  <a href="./201/" class="demo-card">
+                      <div class="demo-title">Demo 201</div>
+                      <div class="demo-desc">コンボボックス</div>
                   </a>
               </div>
           </body>
