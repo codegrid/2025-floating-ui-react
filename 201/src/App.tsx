@@ -76,7 +76,7 @@ function App() {
 
 	const handleSelect = ( value: string ) => {
 		setSelectedValue( value );
-		setTimeout( () => setIsOpen( false ), 0 );
+		setIsOpen( false );
 	};
 
 	return (
@@ -120,12 +120,14 @@ function App() {
 									if ( event.nativeEvent.isComposing ) return;
 									// 候補が一つに絞られていたら、自動選択する
 									if ( filteredOptions.length === 1 ) {
+										event.preventDefault();
 										handleSelect( filteredOptions[ 0 ].value );
 										return;
 									}
 									// 候補が複数あっても、完全一致が1つなら、それを自動選択する
 									const exactMatch = filteredOptions.filter( ( option ) => option.value === filter || option.alt.some( ( alt ) => alt === filter ) );
 									if ( exactMatch.length === 1 ) {
+										event.preventDefault();
 										handleSelect( exactMatch[ 0 ].value );
 									}
 								} }
