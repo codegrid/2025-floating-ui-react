@@ -138,17 +138,17 @@ function App() {
 								<button
 									key={ value }
 									ref={ ( node ) => {
-										listRef.current[ i + 1 ] = node;
+										listRef.current[ i + 1 ] = node; // `i + 1` として自身を判定する
 									} }
 									type="button"
-									tabIndex={ i + 1 === activeIndex ? 0 : - 1 }
+									tabIndex={ i + 1 === activeIndex ? 0 : - 1 } // `i + 1` として自身を判定する
 									style={ {
 										display: "flex",
 										gap: 8,
 										width: "100%",
 										border: 0,
 										textAlign: "left",
-										background: i + 1 === activeIndex ? "cyan" : "",
+										background: i + 1 === activeIndex ? "cyan" : "", // `i + 1` として自身を判定する
 									} }
 									{ ...getItemProps( {
 										onClick() {
