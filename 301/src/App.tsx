@@ -1,4 +1,4 @@
-import { Menu, MenuItem, MenuTriggerItem } from './Menu.tsx';
+import { Menu, MenuItem, MenuTriggerItem } from './Menu';
 
 export default function App() {
 
@@ -23,7 +23,7 @@ export default function App() {
 						<MenuItem label="項目1-3-3" />
 						<MenuItem label="項目1-3-4" />
 					</Menu>
-					<MenuItem label="項目1-4	" />
+					<MenuItem label="項目1-4" />
 				</Menu>
 				<Menu trigger={
 					<MenuTriggerItem>入れ子2</MenuTriggerItem>
