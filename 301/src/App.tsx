@@ -1,4 +1,4 @@
-import { Menu, MenuItem, MenuTriggerItem } from './Menu';
+import { Menu, MenuItem, MenuTriggerItem } from './Menu.tsx';
 
 export default function App() {
 
