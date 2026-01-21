@@ -138,7 +138,7 @@ export const MenuComponent = forwardRef<
 >( ( { children, trigger, ...props }, forwardedRef ) => {
 
 	const [ isOpen, setIsOpen ] = useState( false );
-	const [ hasFocusInside, setHasFocusInside ] = useState( false );
+	const [ _, setHasFocusInside ] = useState( false );
 	const [ activeIndex, setActiveIndex ] = useState<number | null>( null );
 
 	const elementsRef = useRef<Array<HTMLButtonElement | null>>( [] );
